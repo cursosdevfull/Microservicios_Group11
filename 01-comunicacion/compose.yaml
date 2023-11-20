@@ -1,0 +1,70 @@
+version: "3.8"
+
+services:
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    image: frontend
+    container_name: frontend
+    ports:
+      - "9010:3010"
+    environment:
+      - PORT=3010
+      - SERVICE_BACKEND1=http://localhost:9020/api/message
+    restart: on-failure
+    depends_on:
+      - backend1
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3010/healthcheck"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+    networks:
+      - net-ms
+
+  backend1:
+    build:
+      context: ./backend1
+      dockerfile: Dockerfile
+    image: backend1
+    container_name: backend1
+    ports:
+      - "9020:3020"
+    environment:
+      - PORT=3020
+      - SERVICE_BACKEND2=http://backend2:3030/api/message
+    restart: on-failure
+    depends_on:
+      - backend2
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3020/healthcheck"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+    networks:
+      - net-ms
+
+  backend2:
+    build:
+      context: ./backend2
+      dockerfile: Dockerfile
+    image: backend2
+    container_name: backend2
+    environment:
+      - PORT=3030
+    restart: on-failure
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3030/healthcheck"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+    networks:
+      - net-ms
+
+networks:
+  net-ms:
+    driver: bridge
