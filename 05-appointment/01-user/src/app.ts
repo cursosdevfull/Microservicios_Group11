@@ -1,6 +1,6 @@
 import express, { Application } from "express";
 
-import ProductRouter from "./modules/product/infrastructure/presentation/v1/product.routes";
+import UserRouter from "./modules/user/infrastructure/presentation/v1/user.routes";
 
 class App {
   private readonly expressApp: Application;
@@ -17,7 +17,7 @@ class App {
   }
 
   handleRoutes() {
-    this.expressApp.use("/product/v1", ProductRouter);
+    this.expressApp.use("/user/v1", UserRouter);
   }
 
   handleHealthcheck() {
