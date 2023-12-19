@@ -1,0 +1,14 @@
+### Create user
+POST http://localhost:3020/appointment/v1 
+content-type: application/json
+
+{
+      "name": "Juliana",
+      "lastname": "Gomez",
+      "email": "juliana@correo.com",
+      "date": "2021-10-10T15:00:00Z",
+      "medicId": 10,
+      "specialtyId": 3,
+      "centerId": 4,
+      "isoCountryCode": "CO"
+}

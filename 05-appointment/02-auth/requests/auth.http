@@ -1,0 +1,8 @@
+### Login
+POST http://localhost:3010/auth/v1/login 
+content-type: application/json
+
+{
+  "email": "jaime@correo.com",
+  "password": "12345"
+}

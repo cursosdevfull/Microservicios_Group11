@@ -11,12 +11,13 @@ export class UserDto {
     userEntity.lastname = props.lastname;
     userEntity.email = props.email;
     userEntity.password = props.password;
+    userEntity.refreshToken = props.refreshToken;
     userEntity.createdAt = props.createdAt;
     userEntity.updatedAt = props.updatedAt;
     userEntity.deletedAt = props.deletedAt;
     userEntity.roles = props.roles.map((role: any) => {
       const roleEntity = new RoleEntity();
-      roleEntity.id = role.id;
+      roleEntity.id = role;
       return roleEntity;
     });
     return userEntity;

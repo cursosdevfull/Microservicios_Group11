@@ -1,0 +1,44 @@
+### Create user
+POST http://localhost:3000/user/v1 
+content-type: application/json
+
+{
+  "name": "Jaime",
+  "lastname": "Pérez",
+  "email": "jaime@correo.com",
+  "password": "12345",
+  "roles": [1, 2]
+}
+
+### Find user by email
+POST http://localhost:3000/user/v1/user-by-email
+content-type: application/json
+
+{
+  "email": "jaime@correo.com"
+}
+
+### List users
+GET http://localhost:3000/user/v1 
+
+### Get one user
+GET http://localhost:3000/user/v1/1417768c-28cd-4390-b459-d3c9220c6333
+
+
+### List users by page
+GET http://localhost:3000/user/v1/page?page=1&pageSize=10
+
+
+### Update user
+PUT http://localhost:3000/user/v1/1417768c-28cd-4390-b459-d3c9220c6333
+content-type: application/json
+
+{
+  "name": "Jorge",
+  "lastname": "Pérez"
+}
+
+### Delete user
+DELETE http://localhost:3000/user/v1/e4486683-8c85-4c6e-bb9d-0d04b87a1e25
+
+

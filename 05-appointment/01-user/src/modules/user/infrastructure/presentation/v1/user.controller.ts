@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { v4 as uuidv4 } from "uuid";
 
+import { UserResponseDto } from "../../../application/dtos/user-response.dto";
 import { UserApplication } from "../../../application/user.application";
 import { User, UserProperties } from "../../../domain/user";
 
@@ -10,9 +11,10 @@ export class UserController {
   async insert(req: Request, res: Response, next: NextFunction) {
     const body = req.body;
     const id = uuidv4();
+    const refreshToken = uuidv4();
 
     const userProperties: UserProperties = body;
-    const user = new User({ ...userProperties, id });
+    const user = new User({ ...userProperties, id, refreshToken });
 
     await this.application.save(user);
 
@@ -23,6 +25,24 @@ export class UserController {
     const id = req.params.id;
 
     const user = await this.application.findById(id);
+
+    if (!user) {
+      res.status(404).send("User not found");
+      return;
+    }
+
+    res.status(200).json(user);
+  }
+
+  async getUserByEmail(req: Request, res: Response, next: NextFunction) {
+    const { email } = req.body;
+
+    const user = await this.application.findByEmail(email);
+
+    if (!user) {
+      res.status(404).send("User not found");
+      return;
+    }
 
     res.status(200).json(user);
   }
@@ -44,7 +64,12 @@ export class UserController {
     }
     const [users, count] = result;
 
-    res.status(200).json({ data: users, count, page, pageSize });
+    res.status(200).json({
+      data: UserResponseDto.fromDomainToResponse(users as User[]),
+      count,
+      page,
+      pageSize,
+    });
   }
 
   async update(req: Request, res: Response, next: NextFunction) {

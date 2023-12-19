@@ -47,6 +47,10 @@ class UserRoute {
     this.router.get("/:id", controller.getById.bind(controller));
     this.router.put("/:id", controller.update.bind(controller));
     this.router.delete("/:id", controller.delete.bind(controller));
+    this.router.post(
+      "/user-by-email",
+      controller.getUserByEmail.bind(controller)
+    );
   }
 
   getRouter(): Router {

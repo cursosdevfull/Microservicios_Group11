@@ -1,10 +1,14 @@
+import { CryptService } from "../../../core/application/services/crypt.service";
 import { UserRepository } from "../domain/repositories/user";
 import { User, UserProperties } from "../domain/user";
+import { UserResponseDto } from "./dtos/user-response.dto";
 
 export class UserApplication {
   constructor(private readonly repository: UserRepository) {}
 
   async save(user: User) {
+    const passwordHash = await CryptService.hash(user.properties().password);
+    user.update({ password: passwordHash });
     await this.repository.save(user);
   }
 
@@ -34,7 +38,24 @@ export class UserApplication {
       return;
     }
 
-    return result.value;
+    if (!result.value) {
+      return null;
+    }
+
+    return UserResponseDto.fromDomainToResponse(result.value);
+  }
+
+  async findByEmail(email: string) {
+    const result = await this.repository.findByEmail(email);
+    if (result.isErr()) {
+      return;
+    }
+
+    if (!result.value) {
+      return null;
+    }
+
+    return UserResponseDto.fromDomainToResponse(result.value, true);
   }
 
   async find() {
@@ -43,7 +64,7 @@ export class UserApplication {
       return;
     }
 
-    return result.value;
+    return UserResponseDto.fromDomainToResponse(result.value);
   }
 
   async getByPage(page: number, pageSize: number) {

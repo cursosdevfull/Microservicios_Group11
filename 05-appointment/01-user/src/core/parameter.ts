@@ -1,6 +1,6 @@
 export class Parameter {
   static get port() {
-    return Number(process.env.PORT) || 3000;
+    return Number(process.env.APPLICATION_PORT) || 3000;
   }
 
   static get mysql_config() {

@@ -41,7 +41,7 @@ export class User {
     if (!validate(user.refreshToken)) throw new Error("Invalid refreshToken");
 
     Object.assign(this, user);
-    this.createdAt = new Date();
+    this.createdAt = user.createdAt ? new Date(user.createdAt) : new Date();
   }
 
   properties() {
