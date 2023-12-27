@@ -94,28 +94,28 @@ services:
       retries: 3
       start_period: 5s
 
-  app:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    image: app
-    container_name: app
-    restart: unless-stopped
-    ports:
-      - "8000:3000"
-    networks:
-      - net-course
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:3000/healthcheck"]
-      interval: 10s
-      timeout: 10s
-      retries: 3
-      start_period: 5s
-    depends_on:
-      mysql-server:
-        condition: service_healthy
-      rabbitmq:
-        condition: service_healthy
+  # app:
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile
+  #   image: app
+  #   container_name: app
+  #   restart: unless-stopped
+  #   ports:
+  #     - "8000:3000"
+  #   networks:
+  #     - net-course
+  #   healthcheck:
+  #     test: ["CMD", "curl", "-f", "http://localhost:3000/healthcheck"]
+  #     interval: 10s
+  #     timeout: 10s
+  #     retries: 3
+  #     start_period: 5s
+  #   depends_on:
+  #     mysql-server:
+  #       condition: service_healthy
+  #     rabbitmq:
+  #       condition: service_healthy
 
 volumes:
   vol-mysql:

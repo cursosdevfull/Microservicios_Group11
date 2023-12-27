@@ -1,7 +1,7 @@
-import { Request, Response } from 'express';
-import { AppointmentApplication } from 'src/modules/appointment/application/appointment.application';
+import { Request, Response } from "express";
+import { AppointmentApplication } from "src/modules/appointment/application/appointment.application";
 
-import { Appointment, AppointmentProps } from '../../../domain/appointment';
+import { Appointment, AppointmentProps } from "../../../domain/appointment";
 
 export class AppointmentController {
   constructor(private readonly application: AppointmentApplication) {}
@@ -36,5 +36,9 @@ export class AppointmentController {
     }
 
     res.json(appointmentResult.value);
+  }
+
+  async receive() {
+    await this.application.receiveMessageConfirmed();
   }
 }
