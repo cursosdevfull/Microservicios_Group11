@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: server-nginx
+  labels:
+    app: frontend
+    env: dev
+spec:
+  containers:
+    - name: web-python
+      image: python:3.7-alpine
+      command:
+        [
+          "sh",
+          "-c",
+          "echo 'contenedor web01' > index.html && python -m http.server 80",
+        ]
