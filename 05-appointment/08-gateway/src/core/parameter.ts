@@ -42,4 +42,8 @@ export class Parameter {
   static get jwt_expiration_time() {
     return process.env.JWT_EXPIRES_IN || "2m";
   }
+
+  static get service_appointment() {
+    return process.env.SERVICE_APPOINTMENT || "http://localhost:3020";
+  }
 }

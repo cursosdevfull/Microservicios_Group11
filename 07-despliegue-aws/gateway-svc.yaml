@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: gateway-svc
+spec:
+  type: ClusterIP
+  selector:
+    app: gateway-app
+  ports:
+    - port: 80
+      targetPort: 3070
+      protocol: TCP

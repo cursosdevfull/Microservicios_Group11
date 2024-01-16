@@ -1,6 +1,8 @@
 import { Request, Response } from "express";
 import { ApiApplication } from "src/modules/application/api.application";
 
+import { Parameter } from "../../../core/parameter";
+
 export class ApiController {
   constructor(private readonly application: ApiApplication) {}
 
@@ -8,7 +10,7 @@ export class ApiController {
     const data = req.body;
 
     const result = await this.application.endpoint(
-      "http://localhost:3020/appointment/v1 ",
+      Parameter.service_appointment,
       "POST",
       data
     );

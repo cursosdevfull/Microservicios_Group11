@@ -1,0 +1,43 @@
+version: "3.8"
+
+services:
+  user:
+    image: 282865065290.dkr.ecr.us-east-1.amazonaws.com/user
+    build:
+      context: ./01-user
+      dockerfile: Dockerfile
+  auth:
+    image: 282865065290.dkr.ecr.us-east-1.amazonaws.com/auth
+    build:
+      context: ./02-auth
+      dockerfile: Dockerfile
+  appointment:
+    image: 282865065290.dkr.ecr.us-east-1.amazonaws.com/appointment
+    build:
+      context: ./03-appointment
+      dockerfile: Dockerfile
+  appointment-co:
+    image: 282865065290.dkr.ecr.us-east-1.amazonaws.com/appointment-co
+    build:
+      context: ./04-appointment-co
+      dockerfile: Dockerfile
+  appointment-pe:
+    image: 282865065290.dkr.ecr.us-east-1.amazonaws.com/appointment-pe
+    build:
+      context: ./05-appointment-pe
+      dockerfile: Dockerfile
+  appointment-mx:
+    image: 282865065290.dkr.ecr.us-east-1.amazonaws.com/appointment-mx
+    build:
+      context: ./06-appointment-mx
+      dockerfile: Dockerfile
+  helpdesk:
+    image: 282865065290.dkr.ecr.us-east-1.amazonaws.com/helpdesk
+    build:
+      context: ./07-helpdesk
+      dockerfile: Dockerfile
+  gateway:
+    image: 282865065290.dkr.ecr.us-east-1.amazonaws.com/gateway
+    build:
+      context: ./08-gateway
+      dockerfile: Dockerfile

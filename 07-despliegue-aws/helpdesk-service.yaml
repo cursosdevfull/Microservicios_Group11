@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: help-desk-svc
+spec:
+  type: ClusterIP
+  selector:
+    app: help-desk-app
+  ports:
+    - port: 80
+      targetPort: 3070
+      protocol: TCP

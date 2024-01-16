@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: appointment-pe-svc
+spec:
+  type: ClusterIP
+  selector:
+    app: appointment-pe-app
+  ports:
+    - port: 80
+      targetPort: 3050
+      protocol: TCP

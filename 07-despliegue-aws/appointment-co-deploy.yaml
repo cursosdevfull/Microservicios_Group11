@@ -1,0 +1,104 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: appointment-co-deploy
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: appointment-co-app
+  template:
+    metadata:
+      labels:
+        app: appointment-co-app
+    spec:
+      containers:
+        - name: appointment-co
+          image: 282865065290.dkr.ecr.us-east-1.amazonaws.com/appointment-co
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 3060
+          env:
+            - name: APPLICATION_PORT
+              value: "3060"
+            - name: MYSQL_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-secret
+                  key: host
+            - name: MYSQL_PORT
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-secret
+                  key: port
+            - name: MYSQL_USER
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-secret
+                  key: username
+            - name: MYSQL_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-secret
+                  key: password
+            - name: MYSQL_DATABASE
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-secret
+                  key: database
+            - name: MYSQL_SYNCHRONIZE
+              value: "true"
+            - name: MYSQL_POOL_SIZE
+              value: "10"
+            - name: MYSQL_LOGGING
+              value: "true"
+            - name: MYSQL_ENTITIES
+              value: dist/**/infrastructure/**/*.entity.js
+            - name: MYSQL_MAX_QUERY_EXECUTION_TIME
+              value: "10000"
+            - name: REDIS_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: redis-secret
+                  key: host
+            - name: REDIS_PORT
+              valueFrom:
+                secretKeyRef:
+                  name: redis-secret
+                  key: port
+            - name: REDIS_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: redis-secret
+                  key: password
+            - name: RABBITMQ_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: rabbit-config
+                  key: host
+            - name: RABBITMQ_EXCHANGE_NAME
+              valueFrom:
+                configMapKeyRef:
+                  name: rabbit-config
+                  key: exchange_name
+            - name: RABBITMQ_EXCHANGE_TYPE
+              valueFrom:
+                configMapKeyRef:
+                  name: rabbit-config
+                  key: exchange_type
+            - name: RABBITMQ_EXCHANGE_NAME_ERROR
+              valueFrom:
+                configMapKeyRef:
+                  name: rabbit-config
+                  key: exchange_name_error
+            - name: RABBITMQ_ROUTING_KEY_MESSAGE_CONFIRMED
+              valueFrom:
+                configMapKeyRef:
+                  name: rabbit-config
+                  key: routing_key_message_confirmed
+          livenessProbe:
+            httpGet:
+              path: /healthcheck
+              port: 3060
+            initialDelaySeconds: 3
+            periodSeconds: 3

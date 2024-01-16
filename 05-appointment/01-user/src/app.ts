@@ -21,6 +21,9 @@ class App {
   }
 
   handleHealthcheck() {
+    this.expressApp.get("/", (request, response) => {
+      response.status(200).json({ status: "ok" });
+    });
     this.expressApp.get("/healthcheck", (request, response) => {
       response.status(200).json({ status: "ok" });
     });

@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gateway-deploy
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: gateway-app
+  template:
+    metadata:
+      labels:
+        app: gateway-app
+    spec:
+      containers:
+        - name: gateway
+          image: 282865065290.dkr.ecr.us-east-1.amazonaws.com/gateway
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 3070
+          env:
+            - name: APPLICATION_PORT
+              value: "3070"
+            - name: SERVICE_APPOINTMENT
+              value: http://appointment-svc/appointment/v1
+          livenessProbe:
+            httpGet:
+              path: /healthcheck
+              port: 3070
+            initialDelaySeconds: 3
+            periodSeconds: 3

@@ -23,4 +23,4 @@ COPY --from=stage_deps /app/node_modules ./node_modules
 COPY --from=stage_build /app/dist ./dist
 COPY package.json .
 USER node
-CMD npm run start:prod
+CMD npm run start

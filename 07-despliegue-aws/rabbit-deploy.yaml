@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rabbit-deploy
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: rabbit-app
+  template:
+    metadata:
+      labels:
+        app: rabbit-app
+    spec:
+      containers:
+        - name: rabbit
+          image: rabbitmq:management-alpine
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 5672
+            - containerPort: 15672

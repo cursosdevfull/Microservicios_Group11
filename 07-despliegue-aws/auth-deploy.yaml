@@ -1,0 +1,76 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: auth-deploy
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: auth-app
+  template:
+    metadata:
+      labels:
+        app: auth-app
+    spec:
+      containers:
+        - name: auth
+          image: 282865065290.dkr.ecr.us-east-1.amazonaws.com/auth
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 3010
+          env:
+            - name: APPLICATION_PORT
+              value: "3010"
+            #- name: SERVICE_USER_BY_EMAIL
+            #  value: http://user-svc/user/user-by-email
+            - name: JWT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: token-secret
+                  key: token
+            - name: JWT_EXPIRES_IN
+              valueFrom:
+                secretKeyRef:
+                  name: token-secret
+                  key: expires
+            - name: MYSQL_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-secret
+                  key: host
+            - name: MYSQL_PORT
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-secret
+                  key: port
+            - name: MYSQL_USER
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-secret
+                  key: username
+            - name: MYSQL_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-secret
+                  key: password
+            - name: MYSQL_DATABASE
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-secret
+                  key: database
+            - name: MYSQL_SYNCHRONIZE
+              value: "true"
+            - name: MYSQL_POOL_SIZE
+              value: "10"
+            - name: MYSQL_LOGGING
+              value: "true"
+            - name: MYSQL_ENTITIES
+              value: dist/**/infrastructure/**/*.entity.js
+            - name: MYSQL_MAX_QUERY_EXECUTION_TIME
+              value: "10000"
+          livenessProbe:
+            httpGet:
+              path: /healthcheck
+              port: 3010
+            initialDelaySeconds: 3
+            periodSeconds: 3
